@@ -1,0 +1,29 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Posts</title>
+    <link href= "{% static "/bootstrap/css/bootstrap.css" %}" rel="stylesheet">
+</head>
+<body>
+<h1> Pagination </h1>
+<ul >
+{% for p in page %}
+    <li> <a href="/page/{{p.id}}/" >{{p.title}}</a> </li>
+ {% endfor %}
+</ul>
+
+<nav>
+<ul class="pagination">
+    {% for p in paginator.page_range %}
+    <li> <a href="?page={{p}}" >{{p}}</a> </li>
+    {% endfor %}
+</ul>
+</nav>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src=  "{% static "/bootstrap/js/bootstrap.js" %}"></script>
+
+</body>
+</html>
