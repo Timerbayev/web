@@ -32,15 +32,15 @@ def posts(request, slug=1):
     try:
         object2 = Question.objects.new()
         ob = object2.get(id=slug)
-        args['title'] = ob.title
-        args['text'] = ob.text
+        title = ob.title
+        text = ob.text
     except Question.DoesNotExist:
         raise Http404
     try:
         object3 = Answer.objects.get(author=ob.author)
-        args['answer'] = object3.text
+        answer = object3.text
     except Answer.DoesNotExist:
-        args['answer'] = None    # raise Http404
-    return render(request, "post.html", args)
+        answer = None    # raise Http404
+    return render(request, "post.html", {'title': title, 'text': text, 'answer': answer})
 
 # Create your views here.
