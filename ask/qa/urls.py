@@ -17,7 +17,7 @@ from django.conf.urls import url
 from qa.views import test, post_list, posts, popular
 
 urlpatterns = [
-url(r'^page/(?P<slug>\w+)/$', posts, name='posts'),
+url(r'^question/(?P<slug>\w+)/$', posts, name='posts'),
 url(r'^login/.*', test, name='login'),
 url(r'^signup/.*', test, name='signup'),
 url(r'^question/(\d+)/', test, name='question'),
