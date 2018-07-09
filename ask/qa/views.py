@@ -3,6 +3,7 @@ from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.http import Http404
 from .models import Question, Answer
+from django.core.exceptions import ObjectDoesNotExist
 
 
 def test(request, *args, **kwargs):
@@ -28,19 +29,18 @@ def popular(request):
 
 
 def posts(request, slug=1):
-    args = {}
     try:
         object2 = Question.objects.new()
         ob = object2.get(id=slug)
         title = ob.title
         text = ob.text
-    except Question.DoesNotExist:
+    except ObjectDoesNotExist:
         raise Http404
     try:
-        object3 = Answer.objects.get(author=ob.author)
-        answer = object3.text
-    except Answer.DoesNotExist:
-        answer = None    # raise Http404
-    return render(request, "post.html", {'title': title, 'text': text, 'answer': answer})
+        object3 = Answer.answers.filter(author=ob.author)
+        answers = object3
+    except ObjectDoesNotExist:
+        answers = None    # raise Http404
+    return render(request, "post.html", {'title': title, 'text': text, 'answers': answers})
 
 # Create your views here.
