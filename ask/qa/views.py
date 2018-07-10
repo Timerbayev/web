@@ -37,7 +37,7 @@ def posts(request, slug=1):
     except ObjectDoesNotExist:
         raise Http404
     try:
-        object3 = Answer.answers.filter(author=ob.author)
+        object3 = Answer.objects.filter(author=ob.author)
         answers = object3
     except ObjectDoesNotExist:
         answers = None    # raise Http404

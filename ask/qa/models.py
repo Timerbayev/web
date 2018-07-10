@@ -18,12 +18,17 @@ class Question (models.Model):
     author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     likes = models.ManyToManyField(User, related_name='likes')
 
+    def __str__(self):
+        return self.title
+
 class Answer (models.Model):
-    answers = models.Manager()
+    objects = models.Manager()
     text = models.TextField()
     added_at = models.DateTimeField(blank=True, null=True)
     question = models.ForeignKey(Question, null=True, on_delete=models.SET_NULL)
     author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
 
+    def __str__(self):
+        return self.text
 
 # Create your models here.
