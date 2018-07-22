@@ -1,14 +1,18 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class QuestionManager(models.Manager):
     def new(self):
         return self.order_by('-id')
 
+    def last(self):
+        return self.order_by('-id').last()
+
     def popular(self):
         return self.order_by('-rating')
 
-# Create your models here.
+
 class Question (models.Model):
     objects = QuestionManager()
     title = models.CharField(max_length=50, blank=True, null=True, default=None)
@@ -19,7 +23,8 @@ class Question (models.Model):
     likes = models.ManyToManyField(User, related_name='likes')
 
     def __str__(self):
-        return self.title
+        return str(self.id)
+
 
 class Answer (models.Model):
     objects = models.Manager()

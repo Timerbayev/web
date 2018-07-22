@@ -1,0 +1,38 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Answer</title>
+    <link href= "{% static "/bootstrap/css/bootstrap.css" %}" rel="stylesheet">
+</head>
+<body>
+{% for e in form.non_field_errors %}
+<div class="alert alert-danger">{{ e }}</div>
+{% endfor %}
+<form class="form-horizontal" method="post" action="/question/123/">
+{% csrf_token %}
+<fieldset>
+{% for field in form %}
+<div class="control-group
+{% if field.errors %}has-error{% endif %}">
+{% if not field.is_hidden %}
+<label class="control-label">{{ field.label }}</label>
+<div class="controls">{{ field }}</div>
+{% endif %}
+</div>
+{% endfor %}
+</fieldset>
+<br>
+<br>
+<div class="form-actions">
+<button type="submit" class="btn btn-primary">
+Save </button>
+</div>
+</form>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src=  "{% static "/bootstrap/js/bootstrap.js" %}"></script>
+</body>
+</html>
