@@ -36,4 +36,13 @@ class Answer (models.Model):
     def __str__(self):
         return self.text
 
-# Create your models here.
+
+
+class Session(models.Model):
+    objects = models.Manager()
+    key = models.CharField(unique=True, max_length=20)
+    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    expires = models.DateTimeField()
+
+    def __str__(self):
+        return self.key
