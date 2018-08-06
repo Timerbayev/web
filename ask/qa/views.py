@@ -9,6 +9,7 @@ import datetime
 import random
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import PBKDF2PasswordHasher
+from django.contrib.auth import authenticate, login
 
 def generate_long_random_key():
     array = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', '1',  '2', '3', '4', '5', '6']
@@ -106,8 +107,13 @@ def answer(request):
 def sign(request):
     if request.method == "POST":
         form = SignUpForm(request.POST)
+        username = request.POST.get('username')
+        password = request.POST.get('password')
         if form.is_valid():
             form = form.save()
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
             return HttpResponseRedirect('/')
     else:
         form = SignUpForm()
