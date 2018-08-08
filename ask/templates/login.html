@@ -9,6 +9,7 @@
     <link href= "{% static "/bootstrap/css/bootstrap.css" %}" rel="stylesheet">
 </head>
 <body>
+<a >{{ error }}</a>
 {% for e in form.non_field_errors %}
 <div class="alert alert-danger">{{ e }}</div>
 {% endfor %}

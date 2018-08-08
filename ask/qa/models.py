@@ -37,7 +37,6 @@ class Answer (models.Model):
         return self.text
 
 
-
 class Session(models.Model):
     objects = models.Manager()
     key = models.CharField(unique=True, max_length=20)

@@ -50,7 +50,6 @@ class SignUpForm(forms.Form):
     def save(self):
         hasher = PBKDF2PasswordHasher()
         self.cleaned_data['password'] = hasher.encode(password=self.cleaned_data['password'], salt='salt', iterations=20)
-        print(self.cleaned_data)
         user = User(**self.cleaned_data)
         user.save()
         return user
