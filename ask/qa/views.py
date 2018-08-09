@@ -6,13 +6,12 @@ from .models import Question, Answer
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import AskForm, AnswerForm, SignUpForm, LoginForm
 from django.contrib.auth.models import User
-from django.contrib.auth.hashers import PBKDF2PasswordHasher, check_password
+from django.contrib.auth.hashers import PBKDF2PasswordHasher
 from django.contrib.auth import authenticate, login
 
 
 def test(request, *args, **kwargs):
     return HttpResponse('OK')
-
 
 
 def salt_and_hash(password):
@@ -69,9 +68,9 @@ def ask(request):
             form = form.save()
             return HttpResponseRedirect('/question/123/')
     else:
-        if request.user is not None:
+        try:
             form = AskForm(initial={'author': session_user(request)})
-        else:
+        except ObjectDoesNotExist:
             form = AskForm()
     return render(request, 'ask.html', {'form': form})
 
