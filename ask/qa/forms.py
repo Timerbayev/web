@@ -8,9 +8,6 @@ class AskForm(forms.Form):
     title = forms.CharField(max_length=100)
     text = forms.CharField(widget=forms.Textarea)
     author = forms.ModelChoiceField(queryset=User.objects.all(), to_field_name="username")
-    _user = User()
-    
-
 
     def clean_text(self):
         text = self.cleaned_data["text"]
@@ -26,7 +23,6 @@ class AnswerForm(forms.Form):
     text = forms.CharField(widget=forms.Textarea)
     question = forms.ModelChoiceField(queryset=Question.objects.new(), to_field_name="id")
     author = forms.ModelChoiceField(queryset=User.objects.all(), to_field_name="username")
-    _user = User()
 
     def clean_text(self):
         text = self.cleaned_data["text"]

@@ -27,7 +27,7 @@ def session_user(request):
 
 
 def post_list(request):
-    object1 = Question.objects.new()
+    object1 = Question.objects.all()
     limit = request.GET.get('limit', 10)
     page = request.GET.get('page', 1)
     paginator = Paginator(object1, limit)
@@ -63,29 +63,28 @@ def posts(request, slug=1):
 def ask(request):
     if request.method == "POST":
         form = AskForm(request.POST)
-        form._user = request.user
         if form.is_valid():
-            form = form.save()
+            question = form.save()
+            question.author = request.user
+            question.save()
             return HttpResponseRedirect('/question/123/')
     else:
-        try:
-            form = AskForm(initial={'author': session_user(request)})
-        except ObjectDoesNotExist:
-            form = AskForm()
+        form = AskForm(initial={'author': request.user})
     return render(request, 'ask.html', {'form': form})
 
 
 def answer(request):
     if request.method == "POST":
         form = AnswerForm(request.POST)
-        form._user = request.user
         if form.is_valid():
-            form.save()
+            answer1 = form.save()
+            answer1.author = request.user
+            answer1.save()
             return HttpResponseRedirect('/question/123/')
     else:
         try:
             question = Question.objects.order_by('-id').first()
-            form = AnswerForm(initial={'author': session_user(request), 'question': Question.objects.order_by('-id').get(id=question.id)})
+            form = AnswerForm(initial={'author': request.user, 'question': Question.objects.order_by('-id').get(id=question.id)})
         except ObjectDoesNotExist:
             form = AnswerForm()
     return render(request, 'answer.html', {'form': form})

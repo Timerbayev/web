@@ -14,6 +14,7 @@ class QuestionManager(models.Manager):
 
 
 class Question (models.Model):
+    objects1 = models.Manager()
     objects = QuestionManager()
     title = models.CharField(max_length=50, blank=True, null=True, default=None)
     text = models.TextField()
