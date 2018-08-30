@@ -62,19 +62,23 @@ def posts(request, slug=1):
 
 def ask(request):
     if request.method == "POST":
+        AskForm(initial={'author': request.user})
         form = AskForm(request.POST)
+        print("valid - ", form.is_valid(), form, "QueryDict", request.POST)
         if form.is_valid():
             question = form.save()
-            question.author = request.user
-            question.save()
             return HttpResponseRedirect('/question/123/')
     else:
-        form = AskForm(initial={'author': request.user})
+        try:
+            form = AskForm(initial={'author': request.user})  # initial={'author': request.user}
+        except ObjectDoesNotExist:
+            form = AskForm()
     return render(request, 'ask.html', {'form': form})
 
 
 def answer(request):
     if request.method == "POST":
+        AnswerForm(initial={'author': request.user})
         form = AnswerForm(request.POST)
         if form.is_valid():
             answer1 = form.save()
