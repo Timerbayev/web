@@ -6,28 +6,25 @@ from django.core.exceptions import ValidationError
 
 
 class AskForm(forms.Form):
-    title = forms.CharField(max_length=100)
+    title = forms.CharField(max_length=50)
     text = forms.CharField(widget=forms.Textarea)
     author = forms.ModelChoiceField(queryset=User.objects.all(), to_field_name="username")
 
-
     def clean_text(self):
         text = self.cleaned_data["text"]
-        print(self.cleaned_data)
         return text
 
-
     def save(self):
-        print('author', self.cleaned_data['author'])
         question = Question(**self.cleaned_data)
         question.save()
-
+        return question
 
 
 class AnswerForm(forms.Form):
     text = forms.CharField(widget=forms.Textarea)
     question = forms.ModelChoiceField(queryset=Question.objects.new(), to_field_name="id")
     author = forms.ModelChoiceField(queryset=User.objects.all(), to_field_name="username")
+    user_ = User()
 
     def clean_text(self):
         text = self.cleaned_data["text"]

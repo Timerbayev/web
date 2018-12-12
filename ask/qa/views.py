@@ -62,15 +62,14 @@ def posts(request, slug=1):
 
 def ask(request):
     if request.method == "POST":
-        AskForm(initial={'author': request.user})
         form = AskForm(request.POST)
-        print("valid - ", form.is_valid(), form, "QueryDict", request.POST)
+        form._user = request.user
         if form.is_valid():
-            question = form.save()
+            form.save()
             return HttpResponseRedirect('/question/123/')
     else:
         try:
-            form = AskForm(initial={'author': request.user})  # initial={'author': request.user}
+            form = AskForm(initial={'author': request.user})  #
         except ObjectDoesNotExist:
             form = AskForm()
     return render(request, 'ask.html', {'form': form})
@@ -80,10 +79,9 @@ def answer(request):
     if request.method == "POST":
         AnswerForm(initial={'author': request.user})
         form = AnswerForm(request.POST)
+        form._user = request.user
         if form.is_valid():
-            answer1 = form.save()
-            answer1.author = request.user
-            answer1.save()
+            form.save()
             return HttpResponseRedirect('/question/123/')
     else:
         try:
@@ -103,7 +101,6 @@ def sign(request):
             form = form.save()
             user = authenticate(username=username, password=password)
             if user is not None:
-                login(request, user)
                 return HttpResponseRedirect('/')
     else:
         form = SignUpForm()
@@ -117,7 +114,7 @@ def log(request):
         password = request.POST.get('password')
         if form.is_valid():
             user = authenticate(username=username, password=password)
-            if user is not None:
+            if username is not None:
                 login(request, user)
                 return HttpResponseRedirect('/')
             else:
